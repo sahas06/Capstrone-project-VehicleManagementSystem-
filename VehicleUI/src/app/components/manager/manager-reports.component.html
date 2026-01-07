@@ -1,0 +1,163 @@
+<div class="container mt-4 animate-fade-in">
+    <div class="d-flex justify-content-between mb-4 align-items-center">
+        <h2 class="mb-0 d-flex align-items-center gap-2">
+            <mat-icon class="text-primary-orange">analytics</mat-icon>
+            Operational Reports
+        </h2>
+        <button mat-stroked-button color="primary" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon> Back to Dashboard
+        </button>
+    </div>
+
+    <!-- Filters -->
+    <mat-card class="mb-4">
+        <mat-card-header>
+            <mat-card-title class="flex items-center gap-2" style="font-size: 1.1rem;">
+                <mat-icon>filter_list</mat-icon> Report Filters
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="pt-3">
+            <div class="row items-center">
+
+                <div class="col-md-2 mb-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>From Date</mat-label>
+                        <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="filters.from">
+                        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerFrom></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>To Date</mat-label>
+                        <input matInput [matDatepicker]="pickerTo" [(ngModel)]="filters.to">
+                        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                        <mat-datepicker #pickerTo></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Category</mat-label>
+                        <mat-select [(ngModel)]="filters.category">
+                            <mat-option value="">All Categories</mat-option>
+                            <mat-option *ngFor="let cat of categories" [value]="cat.categoryName">{{ cat.categoryName
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Technician</mat-label>
+                        <mat-select [(ngModel)]="filters.technicianId">
+                            <mat-option value="">All Technicians</mat-option>
+                            <mat-option *ngFor="let tech of technicians" [value]="tech.id">{{ tech.fullName
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mb-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Priority</mat-label>
+                        <mat-select [(ngModel)]="filters.priority">
+                            <mat-option value="">All Priorities</mat-option>
+                            <mat-option value="Critical">Critical</mat-option>
+                            <mat-option value="High">High</mat-option>
+                            <mat-option value="Normal">Normal</mat-option>
+                            <mat-option value="Low">Low</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2 mb-3 d-flex">
+                    <button mat-raised-button color="primary" class="w-100" style="height: 56px;"
+                        (click)="loadReports()">
+                        <mat-icon>refresh</mat-icon> Apply Filters
+                    </button>
+                </div>
+
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Charts Grid -->
+    <div class="row">
+        <!-- Daily Trend -->
+        <div class="col-md-6 mb-4">
+            <mat-card class="h-100 chart-card">
+                <mat-card-header>
+                    <mat-card-title class="chart-title">Daily Service Trend</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="chart-container">
+                        <canvas #dailyTrendChart [hidden]="!charts['dailyTrend']"></canvas>
+                        <div *ngIf="!charts['dailyTrend']" class="no-data">No data available</div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Monthly Revenue -->
+        <div class="col-md-6 mb-4">
+            <mat-card class="h-100 chart-card">
+                <mat-card-header>
+                    <mat-card-title class="chart-title">Monthly Revenue</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="chart-container">
+                        <canvas #revenueChart [hidden]="!charts['revenue']"></canvas>
+                        <div *ngIf="!charts['revenue']" class="no-data">No data available</div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Technician Performance -->
+        <div class="col-md-4 mb-4">
+            <mat-card class="h-100 chart-card">
+                <mat-card-header>
+                    <mat-card-title class="chart-title">Technician Performance</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="chart-container">
+                        <canvas #techPerformanceChart [hidden]="!charts['tech']"></canvas>
+                        <div *ngIf="!charts['tech']" class="no-data">No data available</div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Status Distribution -->
+        <div class="col-md-4 mb-4">
+            <mat-card class="h-100 chart-card">
+                <mat-card-header>
+                    <mat-card-title class="chart-title">Status Distribution</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="chart-container">
+                        <canvas #statusChart [hidden]="!charts['status']"></canvas>
+                        <div *ngIf="!charts['status']" class="no-data">No data available</div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Category Analysis -->
+        <div class="col-md-4 mb-4">
+            <mat-card class="h-100 chart-card">
+                <mat-card-header>
+                    <mat-card-title class="chart-title">Category Analysis</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="chart-container">
+                        <canvas #categoryChart [hidden]="!charts['category']"></canvas>
+                        <div *ngIf="!charts['category']" class="no-data">No data available</div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

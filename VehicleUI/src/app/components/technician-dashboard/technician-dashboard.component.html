@@ -1,0 +1,98 @@
+<div class="dashboard-container page-enter">
+    <div class="welcome-header mb-4">
+        <h1 class="d-flex align-items-center gap-2">
+            <span>Hello, {{ userName }}!</span>
+            <span style="font-size: 2rem;">🔧</span>
+        </h1>
+        <p class="text-muted m-0">Manage your assigned service requests and current tasks.</p>
+    </div>
+
+    <mat-card class="elevation-0 border-0">
+        <mat-card-header class="mb-3">
+            <mat-card-title>Active Tasks</mat-card-title>
+            <mat-card-subtitle>Manage your currently assigned jobs</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <table mat-table [dataSource]="tasks" class="w-100 align-middle">
+
+                <!-- Request ID -->
+                <ng-container matColumnDef="serviceRequestId">
+                    <th mat-header-cell *matHeaderCellDef> ID </th>
+                    <td mat-cell *matCellDef="let task"> #{{task.serviceRequestId}} </td>
+                </ng-container>
+
+                <!-- Vehicle -->
+                <ng-container matColumnDef="vehicle">
+                    <th mat-header-cell *matHeaderCellDef> Vehicle </th>
+                    <td mat-cell *matCellDef="let task"> {{task.vehicleNumber}} </td>
+                </ng-container>
+
+                <!-- Issue -->
+                <ng-container matColumnDef="issue">
+                    <th mat-header-cell *matHeaderCellDef> Issue </th>
+                    <td mat-cell *matCellDef="let task"> {{task.issueDescription}} </td>
+                </ng-container>
+
+                <!-- Priority -->
+                <ng-container matColumnDef="priority">
+                    <th mat-header-cell *matHeaderCellDef> Priority </th>
+                    <td mat-cell *matCellDef="let task">
+                        <span
+                            [style.color]="task.priority === 'High' ? 'red' : (task.priority === 'Medium' ? 'orange' : 'green')"
+                            style="font-weight: 500;">
+                            {{task.priority}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <!-- Status -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let task">
+                        <span class="status-badge" [ngClass]="{
+                            'status-assigned': task.status === 'Assigned',
+                            'status-progress': task.status === 'In Progress',
+                            'status-completed': task.status === 'Completed'
+                        }">{{task.status}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Actions -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let task">
+                        <div class="d-flex gap-2">
+                            <!-- Start Job: Visible when Assigned -->
+                            <button mat-flat-button color="primary" *ngIf="task.status === 'Assigned'"
+                                (click)="startJob(task.serviceRequestId)">
+                                <mat-icon>play_arrow</mat-icon> Start Job
+                            </button>
+
+                            <!-- In Progress Actions -->
+                            <ng-container *ngIf="task.status === 'In Progress'">
+                                <button mat-stroked-button color="primary" (click)="recordParts(task.serviceRequestId)">
+                                    <mat-icon>inventory_2</mat-icon> Parts
+                                </button>
+                                <button mat-flat-button color="accent" (click)="completeJob(task.serviceRequestId)">
+                                    <mat-icon>check_circle</mat-icon> Complete
+                                </button>
+                            </ng-container>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center p-4 text-muted" colspan="5">
+                        No active tasks found.
+                    </td>
+                </tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+
+
+
+</div>

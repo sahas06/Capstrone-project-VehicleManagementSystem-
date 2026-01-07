@@ -1,0 +1,153 @@
+/* Global Styles & Professional Theme Engine */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Common Variables */
+  --transition-speed: 0.25s;
+  --card-radius: 12px;
+  --btn-radius: 8px;
+  --font-family-sans: 'Inter', sans-serif;
+  --font-family-heading: 'Outfit', sans-serif;
+
+  /* Material Overrides */
+  --mdc-elevated-card-container-color: var(--card-bg);
+  --mdc-filled-text-field-container-color: #f3f4f6;
+  --mdc-filled-text-field-focus-active-indicator-color: var(--primary-accent);
+  --mdc-filled-text-field-label-text-color: var(--text-muted);
+  --mdc-filled-text-field-input-text-color: var(--text-primary);
+}
+
+/* 🎨 THEME 1: CUSTOMER/PASTEL (Wanderlust) */
+:root,
+.pastel-theme {
+  --page-bg: #F9FAFB;
+  --sidebar-bg: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --primary-accent: #FB923C;
+  --primary-dark: #F97316;
+  --secondary-accent: #FDBA74;
+
+  --success-color: #4ADE80;
+  --warning-color: #FACC15;
+  --danger-color: #F87171;
+  --info-color: #60A5FA;
+
+  --text-primary: #1F2937;
+  --text-muted: #6B7280;
+  --border-color: #E5E7EB;
+
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --header-bg: #FFFFFF;
+}
+
+/* 🏢 THEME 2: ADMIN/PROFESSIONAL (Corporate Slate) */
+.admin-theme {
+  --page-bg: #F8FAFC;
+  --sidebar-bg: #0F172A;
+  --card-bg: #FFFFFF;
+  --primary-accent: #3B82F6;
+  --primary-dark: #2563EB;
+  --secondary-accent: #64748B;
+
+  --success-color: #10B981;
+  --warning-color: #F59E0B;
+  --danger-color: #EF4444;
+  --info-color: #3B82F6;
+
+  --text-primary: #1E293B;
+  --text-muted: #64748B;
+  --border-color: #E2E8F0;
+
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --header-bg: #FFFFFF;
+}
+
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-family-sans);
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-heading);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* MATERIAL OVERRIDES */
+.mat-mdc-card {
+  background-color: var(--card-bg) !important;
+  border-radius: var(--card-radius) !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+/* Fix for Material form field backgrounds to match theme */
+/* Fix for Material form field backgrounds to match theme */
+.mat-mdc-text-field-wrapper {
+  background-color: #F3F4F6 !important;
+  /* Gray-100 for visibility */
+  border-top-left-radius: var(--btn-radius);
+  border-top-right-radius: var(--btn-radius);
+}
+
+.mat-mdc-select-panel {
+  background-color: var(--card-bg) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+/* Make sure buttons use theme colors */
+.mat-primary {
+  --mdc-filled-button-container-color: var(--primary-accent) !important;
+  --mdc-protected-button-container-color: var(--primary-accent) !important;
+  --mdc-outlined-button-outline-color: var(--primary-accent) !important;
+  --mdc-text-button-label-text-color: var(--primary-accent) !important;
+  --mat-option-selected-state-label-text-color: var(--primary-accent) !important;
+}
+
+/* Status Badges */
+.badge {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

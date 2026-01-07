@@ -1,0 +1,98 @@
+<div class="profile-container animate-fade-in">
+    <mat-card class="glass-card profile-card">
+        <mat-card-header>
+            <div mat-card-avatar class="profile-avatar">
+                <mat-icon>person</mat-icon>
+            </div>
+            <mat-card-title>My Profile</mat-card-title>
+            <mat-card-subtitle>Manage your account settings</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div *ngIf="loading" class="loading-spinner">
+                <mat-spinner diameter="40"></mat-spinner>
+            </div>
+
+            <div *ngIf="!loading && user" class="profile-details">
+                <form [formGroup]="profileForm">
+                    <div class="row">
+                        <div class="col">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Full Name</mat-label>
+                                <input matInput formControlName="fullName" [readonly]="!isEditing">
+                                <mat-icon matSuffix>badge</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="col">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Email Address</mat-label>
+                                <input matInput formControlName="email">
+                                <mat-icon matSuffix>email</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Role</mat-label>
+                                <input matInput formControlName="role">
+                                <mat-icon matSuffix>verified_user</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="col">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Phone Number</mat-label>
+                                <input matInput formControlName="phoneNumber" [readonly]="!isEditing"
+                                    placeholder="Not provided">
+                                <mat-icon matSuffix>phone</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Password Change Section -->
+                <div *ngIf="showPasswordChange" id="passwordSection" class="mt-4 p-3 border rounded">
+                    <h4>Change Password</h4>
+                    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Current Password</mat-label>
+                            <input matInput type="password" formControlName="currentPassword">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>New Password</mat-label>
+                            <input matInput type="password" formControlName="newPassword">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Confirm Password</mat-label>
+                            <input matInput type="password" formControlName="confirmPassword">
+                        </mat-form-field>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button mat-button type="button" (click)="togglePasswordChange()">Cancel</button>
+                            <button mat-raised-button color="primary" type="submit"
+                                [disabled]="passwordForm.invalid">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions align="end" class="p-3">
+            <button mat-button (click)="goBack()">Back</button>
+
+            <button mat-button color="warn" *ngIf="!showPasswordChange && !isEditing"
+                (click)="togglePasswordChange()">Change Password</button>
+
+            <button mat-stroked-button color="primary" *ngIf="!isEditing && !showPasswordChange" (click)="toggleEdit()">
+                <mat-icon>edit</mat-icon> Edit Profile
+            </button>
+
+            <ng-container *ngIf="isEditing">
+                <button mat-button (click)="toggleEdit()">Cancel</button>
+                <button mat-raised-button color="primary" (click)="saveProfile()" [disabled]="profileForm.invalid">Save
+                    Changes</button>
+            </ng-container>
+        </mat-card-actions>
+    </mat-card>
+</div>

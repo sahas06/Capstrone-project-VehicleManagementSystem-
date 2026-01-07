@@ -1,0 +1,83 @@
+<div class="dashboard-container page-enter">
+    <div class="welcome-header mb-4">
+        <h1>Hello, {{ userName.split('@')[0] }}! 👋</h1>
+        <p class="text-muted">Here's what's happening with your fleet today.</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Active Requests KPI -->
+        <div class="card kpi-card">
+            <div class="kpi-title">Active Requests</div>
+            <div class="kpi-value">{{ activeServices }}</div>
+            <div class="kpi-trend trend-up">
+                <mat-icon style="font-size:16px; height:16px; width:16px">trending_up</mat-icon> In Progress
+            </div>
+        </div>
+
+        <!-- Total Vehicles KPI -->
+        <div class="card kpi-card">
+            <div class="kpi-title">My Vehicles</div>
+            <div class="kpi-value">{{ myVehicles }}</div>
+            <div class="kpi-trend text-muted">
+                <mat-icon style="font-size:16px; height:16px; width:16px">garage</mat-icon> Registered
+            </div>
+        </div>
+
+        <!-- Pending Payments KPI -->
+        <div class="card kpi-card">
+            <div class="kpi-title">Pending Payments</div>
+            <div class="kpi-value" [class.text-danger]="pendingBills > 0">{{ pendingBills | currency }}</div>
+            <div class="kpi-trend" [class.trend-down]="pendingBills > 0" [class.trend-up]="pendingBills === 0">
+                <span *ngIf="pendingBills > 0">Action Required</span>
+                <span *ngIf="pendingBills === 0">All Clear</span>
+            </div>
+        </div>
+
+        <!-- Total Spent KPI -->
+        <div class="card kpi-card">
+            <div class="kpi-title">Total Spent</div>
+            <div class="kpi-value">{{ totalSpent | currency }}</div>
+            <div class="kpi-trend text-muted">
+                Lifetime Value
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Chart Section -->
+        <div class="col-lg-8 mb-4">
+            <mat-card class="h-100 p-4">
+                <mat-card-header>
+                    <mat-card-title>Service Status Distribution</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div style="height: 300px; position: relative; margin-top: 1rem;">
+                        <canvas #statusChart></canvas>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <mat-card class="h-100 p-4">
+                <mat-card-header>
+                    <mat-card-title>Quick Actions</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="d-flex flex-column gap-3 mt-3">
+                        <a mat-flat-button color="primary" routerLink="/customer/book-service" class="action-btn">
+                            <mat-icon>add_circle_outline</mat-icon> Book New Service
+                        </a>
+                        <a mat-stroked-button color="primary" routerLink="/customer/add-vehicle" class="action-btn">
+                            <mat-icon>directions_car</mat-icon> Add Vehicle
+                        </a>
+                        <a mat-button routerLink="/customer/my-bookings" class="action-btn">
+                            <mat-icon>list_alt</mat-icon> View All Services
+                        </a>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="book-service-container animate-fade-in">
+    <mat-card class="glass-card form-card">
+        <mat-card-header>
+            <mat-card-title>Book a Service</mat-card-title>
+            <mat-card-subtitle>Schedule maintenance for your vehicle</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+
+                <!-- Vehicle Selection -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Select Vehicle</mat-label>
+                    <mat-select formControlName="vehicleId">
+                        <mat-option *ngFor="let v of vehicles" [value]="v.vehicleId">
+                            {{v.registrationNumber}} - {{v.model}} <span *ngIf="v.color">({{v.color}})</span>
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="bookingForm.get('vehicleId')?.hasError('required')">
+                        Please select a vehicle
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="row">
+                    <!-- Priority -->
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Priority</mat-label>
+                        <mat-select formControlName="priority">
+                            <mat-option *ngFor="let p of priorities" [value]="p">
+                                <span [class.text-danger]="p === 'Urgent'">{{ p }}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Date Selection -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Preferred Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="requestDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="bookingForm.get('requestDate')?.hasError('required')">
+                        Date is required
+                    </mat-error>
+                </mat-form-field>
+
+
+                <!-- Issue Description -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Issue Description</mat-label>
+                    <textarea matInput formControlName="issueDescription" rows="4"
+                        placeholder="Describe the problem (e.g. Engine noise, brake failure...)"></textarea>
+                    <mat-error *ngIf="bookingForm.get('issueDescription')?.hasError('required')">
+                        Description is required
+                    </mat-error>
+                    <mat-error *ngIf="bookingForm.get('issueDescription')?.hasError('minlength')">
+                        Please provide at least 10 characters
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="actions">
+                    <button mat-button type="button" (click)="goBack()">Cancel</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="bookingForm.invalid || loading">
+                        <mat-icon>build</mat-icon> {{ loading ? 'Booking...' : 'Book Service' }}
+                    </button>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

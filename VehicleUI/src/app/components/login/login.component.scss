@@ -1,0 +1,141 @@
+.login-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--page-bg);
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-primary);
+}
+
+/* LEFT SIDE: BRAND PANEL */
+.brand-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #FDBA74 0%, #FB923C 100%);
+  color: #7C2D12;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+  text-align: center;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 500px;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+}
+
+/* RIGHT SIDE: FORM PANEL */
+.form-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--page-bg); // Use page bg, so card stands out
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 24px;
+
+  mat-card-header {
+    margin-bottom: 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  mat-card-title {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+    color: var(--text-primary);
+  }
+
+  mat-card-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.btn-lg {
+  height: 48px;
+  font-size: 1rem;
+  margin-top: 16px;
+  border-radius: 8px !important;
+}
+
+.spinner-inline {
+  margin-right: 8px;
+}
+
+.register-link {
+  width: 100%;
+  text-align: center;
+  margin-top: 16px;
+  color: var(--text-muted);
+
+  a {
+    color: var(--primary-accent);
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  color: var(--danger-color);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #fee2e2;
+  font-size: 0.9rem;
+}
+
+.alert-success {
+  background-color: #f0fdf4;
+  color: var(--success-color);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #dcfce7;
+  font-size: 0.9rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .login-layout {
+    flex-direction: column;
+  }
+
+  .brand-panel {
+    padding: 2rem;
+    flex: 0 0 auto;
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}

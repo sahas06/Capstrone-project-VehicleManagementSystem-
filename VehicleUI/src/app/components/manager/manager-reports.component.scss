@@ -1,0 +1,52 @@
+/* Variables */
+$primary-orange: #FB923C;
+$text-dark: #1F2937;
+$text-muted: #6B7280;
+
+.container {
+    max-width: 1400px;
+}
+
+h2 {
+    font-weight: 700;
+    color: $text-dark;
+}
+
+.text-primary-orange {
+    color: $primary-orange;
+}
+
+/* Chart Cards */
+.chart-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.chart-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-data {
+    color: $text-muted;
+    font-style: italic;
+    background: #F9FAFB;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+}

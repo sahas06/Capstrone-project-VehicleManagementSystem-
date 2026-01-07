@@ -1,0 +1,139 @@
+<div class="container animate-fade-in">
+
+    <!-- Header -->
+    <div class="page-header mb-4">
+        <h2>
+            <mat-icon class="mr-2">category</mat-icon>
+            Service Categories
+        </h2>
+        <button mat-flat-button color="primary" *ngIf="!showForm" (click)="initCreate()">
+            <mat-icon>add</mat-icon> New Category
+        </button>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <mat-card class="form-card mb-4" *ngIf="showForm">
+        <mat-card-header class="bg-gradient-primary text-white p-3">
+            <mat-card-title class="m-0 flex items-center gap-2" style="font-size: 1.1rem;">
+                <mat-icon>{{ isEditing ? 'edit' : 'add_circle' }}</mat-icon>
+                {{ isEditing ? 'Edit Category' : 'Add New Category' }}
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+            <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+
+                    <!-- Name -->
+                    <div class="col-md-6 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Category Name</mat-label>
+                            <input matInput formControlName="categoryName" placeholder="e.g. Oil Change">
+                            <mat-icon matPrefix>label</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-md-6 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput formControlName="description" rows="1"
+                                placeholder="Brief details..."></textarea>
+                            <mat-icon matPrefix>description</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Labour -->
+                    <div class="col-md-3 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Labour (₹)</mat-label>
+                            <input matInput type="number" formControlName="labourCharge" min="0">
+                            <mat-icon matPrefix>attach_money</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="col-md-3 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Est. Time (Hrs)</mat-label>
+                            <input matInput type="number" formControlName="estimatedTimeHours" min="1">
+                            <mat-icon matPrefix>schedule</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex justify-content-end gap-2 mt-2">
+                    <button mat-stroked-button color="warn" type="button" (click)="cancelEdit()">Cancel</button>
+                    <button mat-flat-button color="primary" type="submit" [disabled]="categoryForm.invalid">
+                        <mat-icon>save</mat-icon> Save Category
+                    </button>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Category List -->
+    <mat-card class="table-card">
+        <mat-card-content class="p-0">
+            <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+                <!-- ID Columns -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                    <td mat-cell *matCellDef="let cat" class="text-muted"> #{{cat.serviceCategoryId}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                    <td mat-cell *matCellDef="let cat">
+                        <span class="fw-bold text-dark">{{cat.categoryName}}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                    <td mat-cell *matCellDef="let cat" class="text-muted"> {{cat.description}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="labour">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Labour </th>
+                    <td mat-cell *matCellDef="let cat"> {{cat.labourCharge | currency }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Est. Time </th>
+                    <td mat-cell *matCellDef="let cat"> {{cat.estimatedTimeHours}} Hrs </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let cat">
+                        <div class="d-flex gap-2">
+                            <button mat-icon-button color="primary" (click)="editCategory(cat)" matTooltip="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteCategory(cat.serviceCategoryId)"
+                                matTooltip="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center p-5 text-muted" colspan="6">
+                        <mat-icon class="mb-2" style="font-size: 2rem; width: 2rem; height: 2rem;">category</mat-icon>
+                        <div>No categories found. Add one above.</div>
+                    </td>
+                </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>

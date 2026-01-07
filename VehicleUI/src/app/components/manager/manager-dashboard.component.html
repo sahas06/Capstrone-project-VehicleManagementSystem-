@@ -1,0 +1,136 @@
+<div class="dashboard-container page-enter">
+    <div class="welcome-header mb-4">
+        <h1 class="d-flex align-items-center gap-2">
+            <mat-icon class="text-primary-orange" style="transform: scale(1.5);">dashboard</mat-icon>
+            Operational Overview
+        </h1>
+        <p class="text-muted m-0">Monitor service performance and resource allocation.</p>
+    </div>
+
+    <!-- KPI Grid -->
+    <div class="dashboard-grid">
+        <!-- New Requests -->
+        <mat-card class="kpi-card">
+            <mat-card-content class="p-4">
+                <div class="kpi-title">New Requests</div>
+                <div class="kpi-value text-warning">{{ pendingRequests }}</div>
+                <div class="kpi-trend trend-up">
+                    <mat-icon style="font-size:16px; height:16px; width:16px">hourglass_empty</mat-icon> Needs Attention
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Active Techs -->
+        <mat-card class="kpi-card">
+            <mat-card-content class="p-4">
+                <div class="kpi-title">Active Technicians</div>
+                <div class="kpi-value">{{ activeTechs }}</div>
+                <div class="kpi-trend text-primary">
+                    <mat-icon style="font-size:16px; height:16px; width:16px">person</mat-icon> On Shift
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Closed Requests -->
+        <mat-card class="kpi-card">
+            <mat-card-content class="p-4">
+                <div class="kpi-title">Closed This Month</div>
+                <div class="kpi-value text-success">{{ closedThisMonth }}</div>
+                <div class="kpi-trend trend-up">
+                    <mat-icon style="font-size:16px; height:16px; width:16px">trending_up</mat-icon> +12% from last mo.
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Revenue -->
+        <mat-card class="kpi-card">
+            <mat-card-content class="p-4">
+                <div class="kpi-title">Revenue (Est.)</div>
+                <div class="kpi-value">{{ revenueEst | currency }}</div>
+                <div class="kpi-trend trend-up">
+                    <mat-icon style="font-size:16px; height:16px; width:16px">attach_money</mat-icon> On Target
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <!-- Technician Workload -->
+        <div class="col-lg-6 mb-4">
+            <mat-card class="h-100 chart-card">
+                <mat-card-header>
+                    <mat-card-title class="chart-title">Technician Workload</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="p-4">
+                    <div class="chart-container">
+                        <canvas #workloadChart></canvas>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Monthly Volume -->
+        <div class="col-lg-6 mb-4">
+            <mat-card class="h-100 chart-card">
+                <mat-card-header>
+                    <mat-card-title class="chart-title">Monthly Service Volume</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="p-4">
+                    <div class="chart-container">
+                        <canvas #volumeChart></canvas>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Low Stock Alerts -->
+        <div class="col-lg-12">
+            <mat-card class="p-0 table-card">
+                <mat-card-header class="p-4 bg-red-50">
+                    <mat-card-title class="d-flex align-items-center gap-2 text-danger">
+                        <mat-icon>warning</mat-icon>
+                        Low Stock Parts Alert
+                    </mat-card-title>
+                </mat-card-header>
+
+                <table mat-table [dataSource]="lowStockParts" class="w-100" *ngIf="lowStockParts.length > 0">
+
+                    <!-- Part Name Column -->
+                    <ng-container matColumnDef="partName">
+                        <th mat-header-cell *matHeaderCellDef> Part Name </th>
+                        <td mat-cell *matCellDef="let part" class="fw-bold"> {{part.partName}} </td>
+                    </ng-container>
+
+                    <!-- Remaining Quantity Column -->
+                    <ng-container matColumnDef="remainingQty">
+                        <th mat-header-cell *matHeaderCellDef> Remaining Qty </th>
+                        <td mat-cell *matCellDef="let part" class="text-danger fw-bold"> {{part.stockQuantity}} </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let part">
+                            <span class="status-badge"
+                                [ngClass]="part.stockQuantity < 3 ? 'bg-danger text-white' : 'bg-warning text-dark'">
+                                {{ part.stockQuantity < 3 ? 'Critical' : 'Low' }} </span>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <div *ngIf="lowStockParts.length === 0"
+                    class="text-center text-muted p-5 d-flex flex-column align-items-center">
+                    <mat-icon class="text-success mb-2"
+                        style="font-size: 3rem; width: 3rem; height: 3rem;">check_circle</mat-icon>
+                    Inventory levels are healthy. No low stock alerts.
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

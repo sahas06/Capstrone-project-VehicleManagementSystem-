@@ -1,0 +1,52 @@
+.dashboard-container {
+    padding: 32px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.kpi-card {
+    border-radius: 16px !important;
+    overflow: hidden;
+    min-height: 180px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none !important;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.bg-pattern-1 {
+    background: linear-gradient(135deg, #FB923C, #EA580C);
+    /* Orange Gradient */
+}
+
+.bg-pattern-2 {
+    background: linear-gradient(135deg, #FDBA74, #FB923C);
+    /* Lighter Orange Gradient */
+}
+
+.kpi-value {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.kpi-icon {
+    transform: scale(3);
+    transform-origin: bottom left;
+    margin-bottom: 10px;
+}
+
+mat-card-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    opacity: 0.9;
+}

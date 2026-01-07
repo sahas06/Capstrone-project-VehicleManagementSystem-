@@ -1,0 +1,36 @@
+<div class="dashboard-container page-enter">
+    <div class="welcome-header mb-4">
+        <h1>Dashboard Overview</h1>
+        <p class="text-muted">System administration and statistics.</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Total Users Widget -->
+        <mat-card class="kpi-card bg-pattern-1">
+            <mat-card-header>
+                <mat-card-title class="text-white">Total Users</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="d-flex justify-content-between align-items-end mt-3">
+                    <mat-icon class="kpi-icon text-white-50">people</mat-icon>
+                    <div class="kpi-value text-white">{{ userCount }}</div>
+                </div>
+                <div class="text-white-50 mt-2 small">Admins, Managers, Technicians</div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Service Categories Widget -->
+        <mat-card class="kpi-card bg-pattern-2">
+            <mat-card-header>
+                <mat-card-title class="text-white">Service Categories</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="d-flex justify-content-between align-items-end mt-3">
+                    <mat-icon class="kpi-icon text-white-50">category</mat-icon>
+                    <div class="kpi-value text-white">{{ categoryCount }}</div>
+                </div>
+                <div class="text-white-50 mt-2 small">Active service types</div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

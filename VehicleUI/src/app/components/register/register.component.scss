@@ -1,0 +1,82 @@
+.register-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--page-bg);
+    padding: 24px;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+
+    mat-card-header {
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    mat-card-title {
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 8px !important;
+        color: var(--text-primary);
+    }
+
+    mat-card-subtitle {
+        font-size: 1rem;
+        color: var(--text-muted);
+    }
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.btn-lg {
+    height: 48px;
+    font-size: 1rem;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px !important;
+}
+
+.spinner-inline {
+    margin-right: 8px;
+}
+
+.login-link {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+
+    a {
+        color: var(--primary-accent);
+        text-decoration: none;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.alert-error {
+    background-color: #fef2f2;
+    color: #DC2626;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #fee2e2;
+    font-size: 0.9rem;
+}
+
+/* Material Icon Prefix adjustment */
+.mat-icon {
+    margin-right: 8px;
+    color: var(--text-muted);
+}

@@ -1,0 +1,130 @@
+<div class="dashboard-container animate-fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1 d-flex align-items-center gap-2">
+                <mat-icon class="text-primary-orange">assignment_ind</mat-icon>
+                Assign Technicians
+            </h2>
+            <p class="text-muted m-0">Manage pending service requests and assign active technicians.</p>
+        </div>
+        <button mat-stroked-button color="primary" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon> Back to Dashboard
+        </button>
+    </div>
+
+    <mat-card class="elevation-0 border-0">
+        <mat-card-content>
+            <!-- Filter -->
+            <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Search Requests</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Search by Vehicle Number, ID, or Issue...">
+                <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+
+            <div class="table-responsive">
+                <table mat-table [dataSource]="dataSource" matSort class="w-100 align-middle">
+
+                    <!-- Request ID Column -->
+                    <ng-container matColumnDef="serviceRequestId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Request ID </th>
+                        <td mat-cell *matCellDef="let row"> <span class="text-muted">#{{row.serviceRequestId}}</span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Date Column -->
+                    <ng-container matColumnDef="requestDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                        <td mat-cell *matCellDef="let row"> {{row.requestDate | date:'mediumDate'}} </td>
+                    </ng-container>
+
+                    <!-- Vehicle Column -->
+                    <ng-container matColumnDef="vehicle">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle </th>
+                        <td mat-cell *matCellDef="let row">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold text-dark">{{row.vehicle?.registrationNumber || 'N/A'}}</span>
+                                <small class="text-muted">{{row.vehicle?.model}}</small>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Issue Column -->
+                    <ng-container matColumnDef="issue">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Issue </th>
+                        <td mat-cell *matCellDef="let row" [matTooltip]="row.issueDescription">
+                            <div class="text-truncate" style="max-width: 200px;">
+                                {{ formatIssue(row.issueDescription) }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="status-badge" [ngClass]="{
+                            'status-assigned': row.status === 'Assigned',
+                            'status-progress': row.status === 'Requested'
+                        }">
+                                {{row.status}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> Technician Assignment </th>
+                        <td mat-cell *matCellDef="let row">
+                            <div class="d-flex gap-2 align-items-center" (click)="$event.stopPropagation()">
+
+                                <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dense-form-field"
+                                    style="width: 260px;">
+                                    <mat-label>Select Technician</mat-label>
+                                    <mat-select [(ngModel)]="row.selectedTechId">
+                                        <mat-option *ngFor="let tech of technicians" [value]="tech.technicianId"
+                                            [disabled]="tech.activeJobs >= 3">
+                                            <div class="d-flex justify-content-between w-100 align-items-center gap-2">
+                                                <span>{{ tech.technicianName }}</span>
+                                                <div class="d-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                                    <span class="text-muted">Jobs: {{ tech.activeJobs }}</span>
+                                                    <span *ngIf="tech.activeJobs < 3" class="text-success">●</span>
+                                                    <span *ngIf="tech.activeJobs >= 3" class="text-danger">●</span>
+                                                </div>
+                                            </div>
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <button mat-flat-button color="primary"
+                                    [disabled]="!row.selectedTechId || row.status === 'Assigned'" (click)="assign(row)">
+                                    Assign
+                                </button>
+
+                                <button mat-icon-button color="accent" (click)="viewHistory(row.serviceRequestId)"
+                                    matTooltip="View History">
+                                    <mat-icon>history</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                        class="hover:bg-gray-50 transition-colors"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell text-center p-5 text-muted" colspan="6">
+                            <mat-icon class="mb-2"
+                                style="font-size: 2rem; width: 2rem; height: 2rem;">search_off</mat-icon>
+                            <div>No pending requests match your search.</div>
+                        </td>
+                    </tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of requests"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

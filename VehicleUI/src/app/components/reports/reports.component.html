@@ -1,0 +1,64 @@
+<div class="reports-container animate-fade-in">
+    <div class="header">
+        <h1>Analytics Dashboard 📊</h1>
+        <p class="text-muted">Viewing reports as {{ role }}</p>
+    </div>
+
+    <!-- Admin Reports -->
+    <div *ngIf="role === 'Admin'" class="reports-grid">
+
+        <!-- Revenue Card -->
+        <mat-card class="report-card glass-card">
+            <mat-card-header>
+                <mat-card-title>Monthly Revenue</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="data-list">
+                    <div *ngFor="let item of revenueReport" class="data-item">
+                        <span class="label">{{ item.month }}/{{ item.year }}</span>
+                        <span class="value success">{{ item.revenue | currency }}</span>
+                    </div>
+                </div>
+                <div *ngIf="revenueReport.length === 0" class="no-data">No revenue data available.</div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Services Count Card -->
+        <mat-card class="report-card glass-card">
+            <mat-card-header>
+                <mat-card-title>Total Services</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="data-list">
+                    <div *ngFor="let item of servicesReport" class="data-item">
+                        <span class="label">{{ item.month }}/{{ item.year }}</span>
+                        <span class="value primary">{{ item.totalServices }} Services</span>
+                    </div>
+                </div>
+                <div *ngIf="servicesReport.length === 0" class="no-data">No service data available.</div>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+
+    <!-- Manager Reports -->
+    <div *ngIf="role === 'Manager'" class="reports-grid">
+
+        <!-- Workload Card -->
+        <mat-card class="report-card glass-card">
+            <mat-card-header>
+                <mat-card-title>Technician Workload</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="data-list">
+                    <div *ngFor="let item of workloadReport" class="data-item">
+                        <span class="label">{{ item.technician }}</span>
+                        <span class="value info">{{ item.jobsHandled }} Jobs</span>
+                    </div>
+                </div>
+                <div *ngIf="workloadReport.length === 0" class="no-data">No workload data available.</div>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</div>

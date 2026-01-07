@@ -1,0 +1,62 @@
+.book-service-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 80vh;
+    /* Center vertically */
+    align-items: flex-start;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 2.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+
+    mat-card-title {
+        color: var(--text-main);
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    mat-card-subtitle {
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.half-width {
+    width: 48%;
+    /* margin-bottom to happen via row */
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    button {
+        padding: 0.5rem 1.5rem;
+    }
+}
+
+.text-danger {
+    color: #ef4444 !important;
+    font-weight: bold;
+}

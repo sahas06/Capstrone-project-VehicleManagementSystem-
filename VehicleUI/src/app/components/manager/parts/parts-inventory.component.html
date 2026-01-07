@@ -1,0 +1,143 @@
+<div class="container animate-fade-in">
+    <div class="page-header mb-4">
+        <h2>
+            <mat-icon class="mr-2">inventory_2</mat-icon>
+            Parts Inventory
+        </h2>
+        <button mat-stroked-button color="primary" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon> Back to Dashboard
+        </button>
+    </div>
+
+    <!-- Add/Edit Part Form -->
+    <mat-card class="form-card mb-4" [ngClass]="{'focused': isEditing}">
+        <mat-card-header class="bg-gradient-primary text-white p-3">
+            <mat-card-title class="m-0 flex items-center gap-2" style="font-size: 1.1rem;">
+                <mat-icon>{{ isEditing ? 'edit' : 'add_circle' }}</mat-icon>
+                {{ isEditing ? 'Edit Part' : 'Add New Part' }}
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+            <form [formGroup]="partForm" (ngSubmit)="onSubmit()">
+                <div class="row items-center">
+
+                    <!-- Part Name -->
+                    <div class="col-md-5 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Part Name</mat-label>
+                            <input matInput formControlName="partName" placeholder="e.g. Brake Pad">
+                            <mat-icon matPrefix>build</mat-icon>
+                            <mat-error *ngIf="f['partName'].hasError('required')">Part Name is required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="col-md-3 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Price (₹)</mat-label>
+                            <input matInput type="number" formControlName="price" min="0">
+                            <mat-icon matPrefix>attach_money</mat-icon>
+                            <mat-error *ngIf="f['price'].hasError('required')">Price is required</mat-error>
+                            <mat-error *ngIf="f['price'].hasError('min')">Must be > 0</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Stock -->
+                    <div class="col-md-2 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Stock Qty</mat-label>
+                            <input matInput type="number" formControlName="stockQuantity" min="0">
+                            <mat-icon matPrefix>inventory</mat-icon>
+                            <mat-error *ngIf="f['stockQuantity'].hasError('required')">Required</mat-error>
+                            <mat-error *ngIf="f['stockQuantity'].hasError('min')">Must be >= 0</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col-md-2 mb-3 d-flex gap-2">
+                        <button mat-flat-button color="primary" type="submit" [disabled]="partForm.invalid"
+                            class="flex-grow-1" style="height: 56px;">
+                            <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
+                            {{ isEditing ? 'Update' : 'Add' }}
+                        </button>
+                        <button mat-icon-button color="warn" type="button" *ngIf="isEditing" (click)="cancelEdit()"
+                            matTooltip="Cancel Edit"
+                            style="height: 56px; width: 56px; border: 1px solid #ffcccc; border-radius: 4px;">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Parts List -->
+    <mat-card class="table-card">
+        <mat-card-content class="p-0">
+            <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                    <td mat-cell *matCellDef="let part" class="text-muted"> #{{part.partId}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Part Name </th>
+                    <td mat-cell *matCellDef="let part">
+                        <span class="fw-bold text-dark">{{part.partName}}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Price Column -->
+                <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+                    <td mat-cell *matCellDef="let part"> {{part.price | currency}} </td>
+                </ng-container>
+
+                <!-- Stock Column -->
+                <ng-container matColumnDef="stock">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Stock </th>
+                    <td mat-cell *matCellDef="let part">
+                        <span class="stock-badge" [ngClass]="{
+                  'low-stock': part.stockQuantity < 5,
+                  'out-of-stock': part.stockQuantity === 0,
+                  'in-stock': part.stockQuantity >= 5
+              }">
+                            {{ part.stockQuantity }}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let part">
+                        <div class="d-flex gap-2">
+                            <button mat-icon-button color="primary" (click)="startEdit(part)" matTooltip="Edit">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deletePart(part.partId)" matTooltip="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center p-5 text-muted" colspan="5">
+                        <mat-icon class="mb-2" style="font-size: 2rem; width: 2rem; height: 2rem;">inventory</mat-icon>
+                        <div>No parts found. Add some above.</div>
+                    </td>
+                </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>

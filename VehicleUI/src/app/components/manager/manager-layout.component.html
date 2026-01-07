@@ -1,0 +1,75 @@
+<div class="layout-wrapper">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" [class.open]="isSidebarOpen">
+        <div class="brand">
+            <mat-icon class="brand-icon">manage_accounts</mat-icon>
+            <span>Manager</span>
+        </div>
+
+        <nav class="nav-links">
+            <a routerLink="/manager-dashboard" routerLinkActive="active" class="nav-item">
+                <mat-icon>dashboard</mat-icon> <span>Dashboard</span>
+            </a>
+            <a routerLink="/manager/assign" routerLinkActive="active" class="nav-item">
+                <mat-icon>assignment_ind</mat-icon> <span>Assign Technician</span>
+            </a>
+            <a routerLink="/manager/reports" routerLinkActive="active" class="nav-item">
+                <mat-icon>bar_chart</mat-icon> <span>Reports</span>
+            </a>
+            <a routerLink="/manager/parts" routerLinkActive="active" class="nav-item">
+                <mat-icon>inventory_2</mat-icon> <span>Parts Inventory</span>
+            </a>
+        </nav>
+
+        <div class="logout-section">
+            <button (click)="logout()" class="logout-btn">
+                <mat-icon>logout</mat-icon> <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- HEADER -->
+        <header class="top-header">
+            <button mat-icon-button class="mobile-menu-btn" (click)="toggleSidebar()">
+                <mat-icon>menu</mat-icon>
+            </button>
+
+            <!-- Global Search -->
+            <div class="search-bar">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" placeholder="Search vehicle, booking ID..." (keyup.enter)="onSearch($event)" />
+            </div>
+
+            <div class="user-profile">
+                <button mat-icon-button class="notification-btn" aria-label="Notifications">
+                    <mat-icon>notifications</mat-icon>
+                </button>
+
+                <!-- User Menu -->
+                <div class="avatar" [matMenuTriggerFor]="userMenu">MG</div>
+                <mat-menu #userMenu="matMenu" xPosition="before">
+                    <div class="brand d-flex align-items-center gap-2 mb-4 px-3" style="cursor: default">
+                        <mat-icon class="text-primary" style="transform: scale(1.2)">manage_accounts</mat-icon>
+                        <span class="h4 mb-0 fw-bold" style="color: #FB923C; letter-spacing: -0.5px;">Manager</span>
+                    </div>
+                    <button mat-menu-item (click)="showProfile()">
+                        <mat-icon>person</mat-icon>
+                        <span>My Profile</span>
+                    </button>
+                    <mat-divider></mat-divider>
+                    <button mat-menu-item (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                        <span>Logout</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </header>
+
+        <!-- ROUTER OUTLET -->
+        <div class="content-body">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>

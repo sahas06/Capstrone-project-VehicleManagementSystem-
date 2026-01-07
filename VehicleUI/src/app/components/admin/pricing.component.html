@@ -1,0 +1,108 @@
+<div class="container animate-fade-in">
+    <div class="page-header mb-4">
+        <h2>
+            <mat-icon class="mr-2">attach_money</mat-icon>
+            Pricing Management
+        </h2>
+    </div>
+
+    <!-- Pricing Form (Only visible when editing) -->
+    <mat-card class="pricing-card mb-4" *ngIf="isEditing">
+        <mat-card-header class="bg-gradient-primary text-white p-3 d-flex justify-content-between align-items-center">
+            <mat-card-title class="m-0" style="font-size: 1.1rem;">
+                Edit Pricing for <span class="text-white fw-bold" style="text-decoration: underline">{{
+                    selectedCategoryName }}</span>
+            </mat-card-title>
+            <button mat-icon-button (click)="cancelEdit()" class="text-white">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-card-header>
+        <mat-card-content class="p-4">
+            <form [formGroup]="pricingForm" (ngSubmit)="onSubmit()">
+                <div class="row items-center">
+
+                    <div class="col-md-5 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Labour Charge (₹)</mat-label>
+                            <input matInput type="number" formControlName="labourCharge" min="0">
+                            <mat-icon matPrefix>attach_money</mat-icon>
+                            <mat-error *ngIf="f['labourCharge'].hasError('required')">Required</mat-error>
+                            <mat-error *ngIf="f['labourCharge'].hasError('min')">Must be > 0</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-5 mb-3">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Estimated Time (Hours)</mat-label>
+                            <input matInput type="number" formControlName="estimatedTimeHours" min="1">
+                            <mat-icon matPrefix>schedule</mat-icon>
+                            <mat-error *ngIf="f['estimatedTimeHours'].hasError('required')">Required</mat-error>
+                            <mat-error *ngIf="f['estimatedTimeHours'].hasError('min')">Must be > 0</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-2 mb-3 d-flex">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="pricingForm.invalid"
+                            class="w-100" style="height: 56px;">
+                            Update
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Pricing List -->
+    <mat-card class="table-card">
+        <mat-card-content class="p-0">
+            <table mat-table [dataSource]="categories" class="w-100">
+
+                <!-- Category Column -->
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef> Service Category </th>
+                    <td mat-cell *matCellDef="let cat">
+                        <div class="d-flex align-items-center gap-2">
+                            <mat-icon class="text-muted"
+                                style="font-size:18px; width:18px; height:18px">category</mat-icon>
+                            <span class="fw-bold">{{ cat.categoryName }}</span>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Labour Charge Column -->
+                <ng-container matColumnDef="labour">
+                    <th mat-header-cell *matHeaderCellDef> Labour Charge </th>
+                    <td mat-cell *matCellDef="let cat">
+                        <span class="price-tag">{{ cat.labourCharge | currency }}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Est Time Column -->
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef> Est. Time </th>
+                    <td mat-cell *matCellDef="let cat" class="text-muted"> {{ cat.estimatedTimeHours }} hrs </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="text-end"> Actions </th>
+                    <td mat-cell *matCellDef="let cat" class="text-end">
+                        <button mat-stroked-button color="primary" (click)="editPricing(cat)">
+                            Edit Pricing
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="['category', 'labour', 'time', 'actions']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['category', 'labour', 'time', 'actions'];"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell text-center p-5 text-muted" colspan="4">
+                        No categories available to price.
+                    </td>
+                </tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

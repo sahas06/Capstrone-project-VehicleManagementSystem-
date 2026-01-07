@@ -1,0 +1,105 @@
+<div class="my-bookings-container animate-fade-in">
+    <mat-card class="glass-card table-card">
+        <mat-card-header>
+            <div class="header-content">
+                <div>
+                    <mat-card-title>My Service Bookings</mat-card-title>
+                    <mat-card-subtitle>Track your service request status</mat-card-subtitle>
+                </div>
+                <button mat-stroked-button color="primary" (click)="goBack()">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+            </div>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div class="table-responsive">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 glass-table">
+
+                    <!-- Booking ID Column -->
+                    <ng-container matColumnDef="bookingId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Booking ID </th>
+                        <td mat-cell *matCellDef="let element"> #{{element.bookingId}} </td>
+                    </ng-container>
+
+                    <!-- Vehicle Number Column -->
+                    <ng-container matColumnDef="vehicleNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle </th>
+                        <td mat-cell *matCellDef="let element"> {{element.vehicleNumber}} </td>
+                    </ng-container>
+
+                    <!-- Issue Description Column -->
+                    <ng-container matColumnDef="issueDescription">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Issue </th>
+                        <td mat-cell *matCellDef="let element"> {{element.issueDescription}} </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="badge" [ngClass]="{
+                                'status-pending': element.status === 'Requested' || element.status === 'Pending',
+                                'status-completed': element.status === 'Completed',
+                                'status-progress': element.status === 'In Progress' || element.status === 'Assigned',
+                                'status-cancelled': element.status === 'Cancelled',
+                                'status-closed': element.status === 'Closed'
+                            }">
+                                {{element.status}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Technician Column -->
+                    <ng-container matColumnDef="assignedTechnician">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Technician </th>
+                        <td mat-cell *matCellDef="let element"> {{element.assignedTechnician}} </td>
+                    </ng-container>
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> Actions </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="action-buttons d-flex gap-2">
+                                <!-- Cancel/Reschedule only for Requested/Pending -->
+                                <ng-container *ngIf="element.status === 'Requested' || element.status === 'Pending'">
+                                    <button mat-icon-button color="warn" (click)="cancelRequest(element.bookingId)"
+                                        matTooltip="Cancel Request">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="primary"
+                                        (click)="rescheduleRequest(element.bookingId)" matTooltip="Reschedule">
+                                        <mat-icon>edit_calendar</mat-icon>
+                                    </button>
+                                </ng-container>
+
+                                <!-- History always visible -->
+                                <button mat-icon-button color="accent" (click)="viewHistory(element.bookingId)"
+                                    matTooltip="View History">
+                                    <mat-icon>history</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    <!-- No Data Row -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="5" style="text-align: center; padding: 2rem;">
+                            No bookings found. <a routerLink="/customer/book-service" style="color: #a5b4fc">Book a
+                                service?</a>
+                        </td>
+                    </tr>
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+            <div *ngIf="loading" class="loading-spinner">
+                <p>Loading bookings...</p>
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+</div>
